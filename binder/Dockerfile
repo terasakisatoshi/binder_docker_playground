@@ -123,9 +123,11 @@ RUN julia -e '\
 ENV JULIA_PROJECT ${HOME}
 
 COPY ./playground/notebook ${HOME}
-#COPY ./requirements.txt ${HOME}
+COPY ./requirements.txt ${HOME}
 COPY ./Project.toml ${HOME}
 COPY ./jupytext.toml ${HOME}
+
+RUN pip3 install -r requirements.txt
 
 USER root
 RUN chown -R ${NB_UID} ${HOME}

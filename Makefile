@@ -6,7 +6,7 @@ all: build
 
 build:
 	-rm -f Manifest.toml
-	docker build -t ${DOCKERIMAGE} . --build-arg NB_USER=jovyan --build-arg NB_UID=1000
+	docker build -t ${DOCKERIMAGE} -f binder/Dockerfile . --build-arg NB_USER=jovyan --build-arg NB_UID=1000
 	docker-compose build
 	docker-compose run --rm julia julia --project=/work -e 'using Pkg; Pkg.instantiate()'
 
