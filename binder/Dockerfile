@@ -1,7 +1,23 @@
 FROM python:3.9-slim
-# install the notebook package
-RUN pip install --no-cache --upgrade pip && \
-    pip install --no-cache notebook jupyterlab
+
+RUN apt-get update && \
+    apt-get install -y \
+    build-essential \
+    python3 \
+    python3-dev \
+    python3-distutils \
+    curl \
+    ca-certificates \
+    git \
+    zip \
+    && \
+    apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* # clean up
+
+RUN curl -kL https://bootstrap.pypa.io/get-pip.py | python3 && \
+    pip3 install \
+    jupyterlab \
+    notebook \
+    jupytext
 
 # create user with a home directory
 ARG NB_USER
