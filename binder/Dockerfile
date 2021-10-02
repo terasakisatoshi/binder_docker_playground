@@ -45,7 +45,10 @@ RUN curl -kL https://bootstrap.pypa.io/get-pip.py | python3 && \
     nbconvert \
     ipykernel \
     git+https://github.com/IllumiDesk/jupyter-pluto-proxy.git \
-    jupyterlab_code_formatter autopep8 black
+    jupyterlab_code_formatter autopep8 black \
+    webio_jupyter_extension \
+    && \
+    echo Done
 
 # Install/enable extension for Jupyter Notebook users
 RUN pip3 install jupyter-resource-usage && \
@@ -133,8 +136,7 @@ ENV["PYTHON"]=Sys.which("python3")\n\
 ENV["JUPYTER"]=Sys.which("jupyter")\n\
 ' >> ${HOME}/.julia/config/startup.jl && cat ${HOME}/.julia/config/startup.jl
 
-RUN pip install webio_jupyter_extension && \
-    julia -e '\
+RUN julia -e '\
               using Pkg; \
               Pkg.add(PackageSpec(name="IJulia",version="1.23.2")); \
               Pkg.add(PackageSpec(name="Interact", version="0.10.3")); \
