@@ -154,5 +154,20 @@ RUN julia -e '\
 
 ENV JULIA_PROJECT ${HOME}
 
+COPY ./playground/notebook ${HOME}
+#COPY ./requirements.txt ${HOME}
+COPY ./Project.toml ${HOME}
+COPY ./jupytext.toml ${HOME}
+
+USER root
+RUN mkdir -p ${HOME}/.local && chown -R ${NB_UID} ${HOME}
+USER ${USER}
+
+RUN rm -f Manifest.toml && julia -e 'using Pkg; \
+Pkg.instantiate(); \
+Pkg.precompile()' && \
+# Check Julia version \
+julia -e 'using InteractiveUtils; versioninfo()'
+
 WORKDIR ${HOME}
 USER ${USER}
