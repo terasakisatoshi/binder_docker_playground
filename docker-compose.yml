@@ -1,0 +1,18 @@
+version: '3'
+services:
+  lab:
+    image: binderplaygroundjl
+    container_name: binderplaygroundjl-lab
+    volumes:
+      - ./:/work
+    working_dir: /work
+    ports:
+      - "8888:8888"
+    command: jupyter lab --notebook-dir /work --ip=0.0.0.0 --allow-root
+  julia:
+    image: binderplaygroundjl
+    container_name: binderplaygroundjl-julia
+    volumes:
+      - ./:/work
+    working_dir: /work
+    command: julia --project=/work
