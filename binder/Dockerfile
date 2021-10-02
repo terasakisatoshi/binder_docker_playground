@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM julia:1.6.3
 
 RUN apt-get update && \
     apt-get install -y \
@@ -31,5 +31,3 @@ RUN adduser --disabled-password \
     ${NB_USER}
 WORKDIR ${HOME}
 USER ${USER}
-
-RUN which jupyter
