@@ -131,7 +131,7 @@ WORKDIR ${HOME}
 USER ${USER}
 
 USER root
-RUN chown ${NB_UID} ${HOME}
+RUN mkdir -p ${HOME}/.local && chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
 
 RUN mkdir -p ${HOME}/.julia/config && \
@@ -160,7 +160,7 @@ COPY ./Project.toml ${HOME}
 COPY ./jupytext.toml ${HOME}
 
 USER root
-RUN mkdir -p ${HOME}/.local && chown -R ${NB_UID} ${HOME}
+RUN chown -R ${NB_UID} ${HOME}
 USER ${USER}
 
 RUN rm -f Manifest.toml && julia -e 'using Pkg; \
