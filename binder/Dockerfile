@@ -127,7 +127,12 @@ RUN mkdir -p /root/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension &&
 }\n\
 ' >> /root/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/shortcuts.jupyterlab-settings
 
+WORKDIR ${HOME}
 USER ${USER}
+
+USER root
+RUN chown ${NB_UID} ${HOME}
+USER ${NB_USER}
 
 RUN mkdir -p ${HOME}/.julia/config && \
     echo '\
