@@ -42,6 +42,13 @@ RUN curl -kL https://bootstrap.pypa.io/get-pip.py | python3 && \
     notebook \
     jupytext
 
+RUN mkdir -p ${HOME}/.julia/config && \
+    echo '\
+# set environment variables\n\
+ENV["PYTHON"]=Sys.which("python3")\n\
+ENV["JUPYTER"]=Sys.which("jupyter")\n\
+' >> ${HOME}/.julia/config/startup.jl && cat ${HOME}/.julia/config/startup.jl
+
 ENV JULIA_PROJECT ${HOME}
 
 RUN pip install webio_jupyter_extension && \
@@ -67,7 +74,7 @@ USER root
 RUN chown -R ${NB_UID} ${HOME}
 USER ${USER}
 
-RUN rm -f Manifest.toml && julia --project=${HOME} -e 'using Pkg; \
+RUN rm -f Manifest.toml && julia -e 'using Pkg; \
 Pkg.instantiate(); \
 Pkg.precompile()' && \
 # Check Julia version \
