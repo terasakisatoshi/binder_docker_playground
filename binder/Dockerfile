@@ -128,7 +128,8 @@ COPY ./Project.toml ${HOME}
 COPY ./jupytext.toml ${HOME}
 
 RUN pip3 install -r requirements.txt
-
+# convert all md files except README.md
+RUN jupytext --to ipynb `ls *.md | grep -v README`
 USER root
 RUN chown -R ${NB_UID} ${HOME}
 USER ${USER}
