@@ -26,6 +26,11 @@ RUN apt-get update && \
     && \
     apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* # clean up
 
+# install NodeJS
+RUN apt-get update && \
+    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* # clean up
 
 # We need install jupyterlab with sudo user, NOT ${USER}
 RUN curl -kL https://bootstrap.pypa.io/get-pip.py | python3 && \
