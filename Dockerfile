@@ -58,13 +58,17 @@ RUN pip install webio_jupyter_extension && \
     echo "Done"
 
 WORKDIR ${HOME}
-#COPY ./playground/notebook ${HOME}
+COPY ./playground/notebook ${HOME}
 #COPY ./requirements.txt ${HOME}
 COPY ./Project.toml ${HOME}
 COPY ./jupytext.toml ${HOME}
 
 USER root
 RUN chown -R ${NB_UID} ${HOME}
-USER ${NB_USER}
-
 USER ${USER}
+
+RUN rm -f Manifest.toml && julia --project=${HOME} -e 'using Pkg; \
+Pkg.instantiate(); \
+Pkg.precompile()' && \
+# Check Julia version \
+julia -e 'using InteractiveUtils; versioninfo()'
