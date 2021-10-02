@@ -96,7 +96,7 @@ RUN mkdir -p ${HOME}/.jupyter/lab/user-settings/@jupyterlab/notebook-extension &
     echo '{"codeCellConfig": {"lineNumbers": true}}' \
     >> ${HOME}/.jupyter/lab/user-settings/@jupyterlab/notebook-extension/tracker.jupyterlab-settings
 
-RUN mkdir -p ${HOME}/mkdir -p ${HOME}/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension && \
+RUN mkdir -p ${HOME}/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension && \
     echo '{"shortcuts": [{"command": "runmenu:restart-and-run-all", "keys": ["Alt R"], "selector": "[data-jp-code-runner]"}]}' \
     >> ${HOME}/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/shortcuts.jupyterlab-settings
 RUN chown -R ${NB_UID} ${HOME}
@@ -127,9 +127,10 @@ COPY ./requirements.txt ${HOME}
 COPY ./Project.toml ${HOME}
 COPY ./jupytext.toml ${HOME}
 
+ENV PATH=${PATH}:${HOME}/.local/bin
 RUN pip3 install -r requirements.txt
 # convert all md files except README.md
-RUN jupytext --to ipynb `ls *.md | grep -v README`
+RUN jupytext --to ipynb `ls *.md | grep -v README` && rm `ls *.md | grep -v README`
 
 USER root
 RUN chown -R ${NB_UID} ${HOME}
