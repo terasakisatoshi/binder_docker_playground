@@ -26,8 +26,8 @@ RUN apt-get update && \
     && \
     apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* # clean up
 
-USER ${USER}
-ENV PATH=${HOME}/.local/bin:$PATH
+#USER ${USER}
+#ENV PATH=${HOME}/.local/bin:$PATH
 
 RUN curl -kL https://bootstrap.pypa.io/get-pip.py | python3 && \
     pip3 install \
