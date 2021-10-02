@@ -82,56 +82,24 @@ RUN jupyter labextension install jupyterlab-topbar-extension && \
     rm -rf ~/.node-gyp && \
     echo Done
 
-# Setup default formatter (For Python Users only)
-RUN mkdir -p /root/.jupyter/lab/user-settings/@ryantam626/jupyterlab_code_formatter && echo '\
-{\n\
-    "preferences": {\n\
-        "default_formatter": {\n\
-            "python": "black",\n\
-        }\n\
-    }\n\
-}\n\
-\
-'>> /root/.jupyter/lab/user-settings/@ryantam626/jupyterlab_code_formatter/settings.jupyterlab-settings
-
-# Set color theme Monokai++ by default (The selection is due to my hobby)
-RUN mkdir -p /root/.jupyter/lab/user-settings/@jupyterlab/apputils-extension && echo '\
-{\n\
-    "theme": "Monokai++"\n\
-}\n\
-\
-' >> /root/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings
-
-# Show line numbers by default
-RUN mkdir -p /root/.jupyter/lab/user-settings/@jupyterlab/notebook-extension && echo '\
-{\n\
-    "codeCellConfig": {\n\
-        "lineNumbers": true,\n\
-    },\n\
-}\n\
-\
-' >> /root/.jupyter/lab/user-settings/@jupyterlab/notebook-extension/tracker.jupyterlab-settings
-
-# assign `Alt-R` to restart run all command 
-RUN mkdir -p /root/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension && echo '\
-{\n\
-    "shortcuts": [\n\
-        {\n\
-            "command": "runmenu:restart-and-run-all",\n\
-            "keys": [\n\
-                "Alt R"\n\
-            ],\n\
-            "selector": "[data-jp-code-runner]"\n\
-        }\n\
-    ]\n\
-}\n\
-' >> /root/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/shortcuts.jupyterlab-settings
-
 WORKDIR ${HOME}
 USER ${USER}
 
 USER root
-RUN mkdir -p ${HOME}/.local && chown -R ${NB_UID} ${HOME}
+RUN mkdir -p ${HOME}/.local ${HOME}/.jupyter
+# Set color theme Monokai++ by default
+RUN mkdir -p ${HOME}/.jupyter/lab/user-settings/@jupyterlab/apputils-extension && \
+    echo '{"theme": "Monokai++"}' >> \
+    ${HOME}/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings
+
+RUN mkdir -p ${HOME}/.jupyter/lab/user-settings/@jupyterlab/notebook-extension && \
+    echo '{"codeCellConfig": {"lineNumbers": true}}' \
+    >> ${HOME}/.jupyter/lab/user-settings/@jupyterlab/notebook-extension/tracker.jupyterlab-settings
+
+RUN mkdir -p ${HOME}/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension && \
+    echo '{"shortcuts": [{"command": "runmenu:restart-and-run-all", "keys": ["Alt R"], "selector": "[data-jp-code-runner]"}]}' \
+    >> ${HOME}.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/shortcuts.jupyterlab-settings
+RUN chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
 
 RUN mkdir -p ${HOME}/.julia/config && \
