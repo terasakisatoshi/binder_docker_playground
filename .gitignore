@@ -25,3 +25,4 @@ Manifest.toml
 
 # ignore .ipynb
 *.ipynb
+*.ipynb_checkpoints
