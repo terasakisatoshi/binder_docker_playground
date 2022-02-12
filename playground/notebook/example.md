@@ -14,13 +14,8 @@ jupyter:
 
 ```julia
 using Example
-import Example:hello
 ```
 
 ```julia
 hello("World")
-```
-
-```julia
-hello()="goma"
 ```
